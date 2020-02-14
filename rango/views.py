@@ -13,12 +13,14 @@ def index(request):
     context_dict['boldmessage'] = 'Crunchy, creamy, cookie, candy, cupcake!'
     context_dict['categories'] = category_list
     context_dict['pages'] = page_list
-    #return HttpResponse("Rango says hey there partner!<a href='/rango/about/'>About</a>") #chapter3
+    #return HttpResponse('Rango says hey there partner!<a href="/rango/about/">About</a>') #chapter3
     return render(request, 'rango/index.html', context = context_dict)
 
 def about(request):
-    #return HttpResponse("Rango says here is the about page.<a href='/rango/'>Index</a>") #chapter3
-    return render(request, 'rango/about.html')
+    #return HttpResponse('Rango says: here is the about page. <a href="/rango/">Index</a>') #chapter3
+    print(request.method)
+    print(request.user)
+    return render(request, 'rango/about.html', {})
 
 def show_category(request, category_name_slug):
     context_dict = {}
@@ -41,7 +43,8 @@ def add_category(request):
         form = CategoryForm(request.POST)
 
         if form.is_valid():
-            form.save(commit=True)
+            cat = form.save(commit=True)
+            print(cat, cat.slug)
             return redirect('/rango/')
 
         else:
